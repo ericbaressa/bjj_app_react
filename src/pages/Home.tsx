@@ -22,7 +22,7 @@ const Home: React.FC<{ goTo: (page: string) => void }> = ({ goTo }) => {
           style={{ padding: '10px 20px' }}
           onClick={() => goTo('transitions')}
         >
-          Transiciones
+          Transicionesaa
         </button>
       </div>
     </div>
