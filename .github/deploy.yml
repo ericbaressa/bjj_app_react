@@ -1,0 +1,35 @@
+name: Deploy Vite App to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Se ejecuta cada push a main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Clonar repo
+      - uses: actions/checkout@v3
+
+      # 2️⃣ Instalar Node
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Node moderno para Vite + React
+
+      # 3️⃣ Instalar dependencias
+      - name: Install dependencies
+        run: npm ci
+
+      # 4️⃣ Build
+      - name: Build
+        run: npm run build
+
+      # 5️⃣ Deploy a GitHub Pages
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
