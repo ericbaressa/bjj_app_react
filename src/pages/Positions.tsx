@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../services/supabaseClient';
 
 interface Position {
@@ -78,17 +79,28 @@ const Positions: React.FC = () => {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {positions.map((pos) => (
-            <div
+            <Link
               key={pos.id}
+              to={`/positions/${pos.id}`}
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'space-between', // para que el video quede a la derecha
                 border: '1px solid #ccc',
                 borderRadius: '8px',
                 padding: '12px',
                 backgroundColor: 'white',
                 width: '100%',
+                textDecoration: 'none', // quitar subrayado
+                color: 'inherit', // hereda color de texto
+                transition: 'transform 0.2s, box-shadow 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1.02)';
+                (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1)';
+                (e.currentTarget as HTMLAnchorElement).style.boxShadow = 'none';
               }}
             >
               {/* Imagen */}
@@ -122,27 +134,7 @@ const Positions: React.FC = () => {
                   🇯🇵 {pos.name_jp}
                 </span>
               </div>
-
-              {/* Link YouTube */}
-              {pos.video && (
-                <a
-                  href={pos.video}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    marginLeft: '16px',
-                    padding: '8px 12px',
-                    backgroundColor: '#ff0000',
-                    color: 'white',
-                    borderRadius: '6px',
-                    textDecoration: 'none',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  🎬 Ver video
-                </a>
-              )}
-            </div>
+            </Link>
           ))}
         </div>
       )}

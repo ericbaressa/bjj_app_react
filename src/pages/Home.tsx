@@ -1,30 +1,39 @@
+// pages/Home.tsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Home: React.FC<{ goTo: (page: string) => void }> = ({ goTo }) => {
+const Home: React.FC = () => {
   return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
-      <h1>Bienvenido a tu App BJJ</h1>
-      <p>Selecciona a dónde quieres ir:</p>
-      <div style={{ marginTop: '20px' }}>
-        <button
-          style={{ marginRight: '10px', padding: '10px 20px' }}
-          onClick={() => goTo('positions')}
-        >
-          Posiciones
-        </button>
-        <button
-          style={{ marginRight: '10px', padding: '10px 20px' }}
-          onClick={() => goTo('game')}
-        >
-          Juego
-        </button>
-        <button
-          style={{ padding: '10px 20px' }}
-          onClick={() => goTo('transitions')}
-        >
-          Transicionesaa
-        </button>
-      </div>
+    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+      <h1>Bienvenido a la App</h1>
+      <p>Desde aquí puedes navegar a las diferentes secciones:</p>
+
+      <ul
+        style={{
+          listStyle: 'none',
+          padding: 0,
+          marginTop: '20px',
+          display: 'flex',
+          gap: '20px',
+        }}
+      >
+        <li>
+          <Link
+            to="/positions"
+            style={{
+              textDecoration: 'none',
+              padding: '10px 16px',
+              backgroundColor: '#007bff',
+              color: 'white',
+              borderRadius: '6px',
+              fontWeight: 'bold',
+            }}
+          >
+            Posiciones
+          </Link>
+        </li>
+        {/* Puedes agregar más secciones aquí */}
+      </ul>
     </div>
   );
 };
