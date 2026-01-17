@@ -9,7 +9,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Mi App Supabase',
+        name: 'BjjARES',
         short_name: 'MiApp',
         theme_color: '#0f172a',
         background_color: '#ffffff',
