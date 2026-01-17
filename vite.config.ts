@@ -10,7 +10,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       manifest: {
         name: 'BjjARESSAL',
-        short_name: 'MiApp',
+        short_name: 'BjjARESSAL',
         theme_color: '#0f172a',
         background_color: '#ffffff',
         display: 'standalone',
