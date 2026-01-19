@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../services/supabaseClient';
-
+import FullscreenModal from "../components/FullscreenModal";
 interface Position {
   id: number;
   name_es: string;
   name_en: string;
   name_jp: string;
   image: string;
-  video?: string;
-  tips?: string;
 }
 
 const PAGE_SIZE = 10;
@@ -52,9 +50,8 @@ const Positions: React.FC = () => {
 
   return (
     <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
-      <h1>Posiciones</h1>
+      <h1 style={{ fontSize: 'clamp(20px, 3vw, 28px)' }}>Posiciones</h1>
 
-      {/* Filtro */}
       <input
         type="text"
         placeholder="Filtrar por nombre..."
@@ -69,13 +66,14 @@ const Positions: React.FC = () => {
           marginBottom: '20px',
           borderRadius: '6px',
           boxSizing: 'border-box',
+          fontSize: 'clamp(12px, 2vw, 16px)',
         }}
       />
 
       {loading ? (
-        <p>Cargando...</p>
+        <p style={{ fontSize: 'clamp(12px, 2vw, 16px)' }}>Cargando...</p>
       ) : positions.length === 0 ? (
-        <p>No hay posiciones que coincidan.</p>
+        <p style={{ fontSize: 'clamp(12px, 2vw, 16px)' }}>No hay posiciones que coincidan.</p>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {positions.map((pos) => (
@@ -85,52 +83,53 @@ const Positions: React.FC = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                border: '1px solid #ccc',
+                border: '1px solid #2a2a2a',
                 borderRadius: '8px',
                 padding: '12px',
-                backgroundColor: 'white',
+                backgroundColor: '#1a1a1a',
                 width: '100%',
-                textDecoration: 'none', // quitar subrayado
-                color: 'inherit', // hereda color de texto
+                textDecoration: 'none',
+                color: 'inherit',
                 transition: 'transform 0.2s, box-shadow 0.2s',
               }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1.02)';
-                (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1)';
-                (e.currentTarget as HTMLAnchorElement).style.boxShadow = 'none';
-              }}
             >
-              {/* Imagen */}
-              <img
-                src={pos.image}
-                alt={pos.name_en}
-                style={{
-                  width: '140px',
-                  height: '140px',
-                  borderRadius: '8px',
-                  objectFit: 'cover',
-                  marginRight: '16px',
-                  flexShrink: 0,
-                }}
-              />
-
-              {/* Nombres */}
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '6px',
-                  flexGrow: 1,
+                  width: '30%',
+                  maxWidth: '140px',
+                  aspectRatio: '1 / 1',
+                  borderRadius: '8px',
+                  overflow: 'hidden',
+                  flexShrink: 0,
+                  marginRight: '16px',
+                  background: '#222',
                 }}
               >
-                <span style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
+                <img
+                  src={pos.image}
+                  alt={pos.name_en}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexGrow: 1 }}>
+                <span style={{ fontWeight: 'bold', fontSize: 'clamp(14px, 2vw, 18px)' }}>
                   🇪🇸 {pos.name_es}
                 </span>
-                <span style={{ color: '#555' }}>🇬🇧 {pos.name_en}</span>
-                <span style={{ color: '#888', fontStyle: 'italic' }}>
+                <span style={{ color: '#555', fontSize: 'clamp(12px, 1.8vw, 16px)' }}>
+                  🇬🇧 {pos.name_en}
+                </span>
+                <span
+                  style={{
+                    color: '#888',
+                    fontStyle: 'italic',
+                    fontSize: 'clamp(11px, 1.6vw, 14px)',
+                  }}
+                >
                   🇯🇵 {pos.name_jp}
                 </span>
               </div>
@@ -139,23 +138,30 @@ const Positions: React.FC = () => {
         </div>
       )}
 
-      {/* Paginación */}
       {totalPages > 1 && (
         <div style={{ marginTop: '20px', textAlign: 'center' }}>
           <button
             onClick={() => setPage((p) => Math.max(p - 1, 0))}
             disabled={page === 0}
-            style={{ marginRight: '10px', padding: '8px 16px' }}
+            style={{
+              marginRight: '10px',
+              padding: '8px 16px',
+              fontSize: 'clamp(12px, 1.8vw, 16px)',
+            }}
           >
             Anterior
           </button>
-          <span>
+          <span style={{ fontSize: 'clamp(12px, 1.8vw, 16px)' }}>
             Página {page + 1} de {totalPages}
           </span>
           <button
             onClick={() => setPage((p) => Math.min(p + 1, totalPages - 1))}
             disabled={page + 1 >= totalPages}
-            style={{ marginLeft: '10px', padding: '8px 16px' }}
+            style={{
+              marginLeft: '10px',
+              padding: '8px 16px',
+              fontSize: 'clamp(12px, 1.8vw, 16px)',
+            }}
           >
             Siguiente
           </button>

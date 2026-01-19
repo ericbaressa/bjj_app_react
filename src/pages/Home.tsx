@@ -1,39 +1,71 @@
-// pages/Home.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import FullscreenModal from "../components/FullscreenModal";
 
 const Home: React.FC = () => {
-  return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h1>Bienvenido a la App</h1>
-      <p>Desde aquí puedes navegar a las diferentes secciones:</p>
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-      <ul
-        style={{
-          listStyle: 'none',
-          padding: 0,
-          marginTop: '20px',
-          display: 'flex',
-          gap: '20px',
-        }}
-      >
-        <li>
-          <Link
-            to="/positions"
-            style={{
-              textDecoration: 'none',
-              padding: '10px 16px',
-              backgroundColor: '#007bff',
-              color: 'white',
-              borderRadius: '6px',
-              fontWeight: 'bold',
-            }}
-          >
-            Posiciones
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  const styles = {
+    container: {
+      minHeight: '100vh',
+      padding: '20px',
+      boxSizing: 'border-box' as const,
+    },
+    header: {
+      marginBottom: '20px',
+    },
+    grid: {
+      display: 'grid',
+      gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+      gap: '24px',
+      marginBottom: isMobile ? '70px' : '0',
+    },
+    card: {
+      background: '#1a1a1a',
+      padding: '24px',
+      borderRadius: '16px',
+      border: '1px solid #2a2a2a',
+    },
+    link: {
+      display: 'inline-block',
+      marginTop: '12px',
+      fontWeight: 'bold',
+      color: '#646cff',
+      textDecoration: 'none',
+    },
+  };
+
+  return (
+    <div style={styles.container}>
+      <header style={styles.header}>
+        <h1>Bienvenido a la App</h1>
+        <p>Selecciona una sección</p>
+      </header>
+
+      <main style={styles.grid}>
+        <section style={styles.card}>
+          <h2>Posiciones</h2>
+          <Link to="/positions" style={styles.link}>
+            Ir a posiciones
           </Link>
-        </li>
-        {/* Puedes agregar más secciones aquí */}
-      </ul>
+        </section>
+
+        <section style={styles.card}>
+          <h2>Sección 2</h2>
+          <p>Contenido futuro</p>
+        </section>
+
+        <section style={styles.card}>
+          <h2>Sección 3</h2>
+          <p>Contenido futuro</p>
+        </section>
+      </main>
     </div>
   );
 };

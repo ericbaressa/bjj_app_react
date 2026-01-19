@@ -1,8 +1,8 @@
 // pages/PositionDetail.tsx
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { supabase } from '../services/supabaseClient';
-
+import FullscreenModal from "../components/FullscreenModal";
 interface Position {
   id: number;
   name_es: string;
@@ -13,6 +13,17 @@ interface Position {
   tips?: string;
 }
 
+// POSICIÓN POR DEFECTO
+const defaultPosition: Position = {
+  id: 0,
+  name_es: "Posición por defecto",
+  name_en: "Default position",
+  name_jp: "デフォルトポジション",
+  image: "https://via.placeholder.com/800x450?text=Sin+imagen",
+  video: "",
+  tips: "Esta es una posición por defecto.",
+};
+
 const PositionDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [position, setPosition] = useState<Position | null>(null);
@@ -22,14 +33,25 @@ const PositionDetail: React.FC = () => {
     const fetchPosition = async () => {
       setLoading(true);
 
+      // Buscamos por id
       const { data, error } = await supabase
         .from('positions')
         .select('*')
-        .eq('id', id)
+        .eq('id', Number(id))
         .single();
 
-      if (error) console.error(error);
-      else setPosition(data);
+      if (error || !data) {
+        // Si no existe, cargamos la PRIMERA posición de la tabla
+        const { data: firstData } = await supabase
+          .from('positions')
+          .select('*')
+          .limit(1)
+          .single();
+
+        setPosition(firstData || null);
+      } else {
+        setPosition(data);
+      }
 
       setLoading(false);
     };
@@ -38,42 +60,31 @@ const PositionDetail: React.FC = () => {
   }, [id]);
 
   if (loading) return <p style={{ padding: '20px' }}>Cargando...</p>;
-  if (!position) return <p style={{ padding: '20px' }}>No se encontró la posición.</p>;
 
-  // Función para convertir URL de YouTube a embed
+  // SI NO HAY NINGUNA POSICIÓN, usa la por defecto
+  const currentPosition = position || defaultPosition;
+
+  // Convertir URL de YouTube a embed
   const getYouTubeEmbedUrl = (url: string) => {
     try {
       const urlObj = new URL(url);
       const videoId = urlObj.searchParams.get('v');
       return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
     } catch {
-      return url; // Si no es URL válida, devolver tal cual
+      return url;
     }
   };
 
   return (
     <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <Link
-        to="/positions"
-        style={{
-          display: 'inline-block',
-          marginBottom: '20px',
-          textDecoration: 'none',
-          color: '#007bff',
-          fontWeight: 'bold',
-        }}
-      >
-        ← Volver a posiciones
-      </Link>
-
       <h1 style={{ marginBottom: '20px' }}>
-        {position.name_es} / {position.name_en} / {position.name_jp}
+        {currentPosition.name_es} / {currentPosition.name_en} / {currentPosition.name_jp}
       </h1>
 
       {/* Imagen */}
       <img
-        src={position.image}
-        alt={position.name_en}
+        src={currentPosition.image}
+        alt={currentPosition.name_en}
         style={{
           width: '100%',
           borderRadius: '12px',
@@ -82,12 +93,12 @@ const PositionDetail: React.FC = () => {
         }}
       />
 
-      {/* Video de YouTube embebido */}
-      {position.video && (
+      {/* Video */}
+      {currentPosition.video && (
         <div style={{ marginBottom: '20px', position: 'relative', paddingTop: '56.25%' }}>
           <iframe
-            src={getYouTubeEmbedUrl(position.video)}
-            title={position.name_en}
+            src={getYouTubeEmbedUrl(currentPosition.video)}
+            title={currentPosition.name_en}
             allowFullScreen
             style={{
               position: 'absolute',
@@ -98,12 +109,12 @@ const PositionDetail: React.FC = () => {
               border: 'none',
               borderRadius: '12px',
             }}
-          ></iframe>
+          />
         </div>
       )}
 
       {/* Tips */}
-      {position.tips && (
+      {currentPosition.tips && (
         <div
           style={{
             backgroundColor: '#f9f9f9',
@@ -113,7 +124,7 @@ const PositionDetail: React.FC = () => {
           }}
         >
           <h3 style={{ marginBottom: '10px' }}>Tips:</h3>
-          <p style={{ margin: 0 }}>{position.tips}</p>
+          <p style={{ margin: 0 }}>{currentPosition.tips}</p>
         </div>
       )}
     </div>
