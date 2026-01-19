@@ -10,7 +10,8 @@ import Drills from "./Transiciones";
 import SavedCombos from "./SavedCombos";
 import FullscreenModal from "../components/FullScreenModal";
 
-const HEADER_HEIGHT = 40;
+const HEADER_HEIGHT = 56;
+const FOOTER_HEIGHT = 40;
 
 const footerStyle = {
   position: "fixed" as const,
@@ -46,19 +47,34 @@ const Layout: React.FC = () => {
   /* =====================
      📱 MOBILE
      ===================== */
-    if (isMobile) {
-    return (
-      <div className="app">
-        <div className="content">
-          <Outlet />
+     if (isMobile) {
+      return (
+        
+        <div
+          className="app"
+          style={{
+            paddingTop: HEADER_HEIGHT,       // 👈 espacio para Header
+            paddingBottom: FOOTER_HEIGHT,    // 👈 espacio para Footer
+            minHeight: "100vh",
+            boxSizing: "border-box",
+          }}
+        >
+          <div
+            className="content"
+            style={{
+              height: "100%",
+              overflowY: "auto",
+            }}
+          >
+            <Outlet />
+          </div>
+    
+          <div style={footerStyle}>
+            <Footer />
+          </div>
         </div>
-  
-        <div style={footerStyle}>
-          <Footer />
-        </div>
-      </div>
-    );
-  }
+      );
+    }
     
 
   /* =====================

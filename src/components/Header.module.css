@@ -1,0 +1,38 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111;
+  border-bottom: 1px solid #2a2a2a;
+  z-index: 3000;
+}
+
+.side {
+  flex: 1;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+}
+
+
