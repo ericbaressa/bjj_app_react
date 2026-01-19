@@ -6,7 +6,8 @@ import Footer from "../components/Footer";
 import Home from "./Home";
 import Positions from "./Positions";
 import PositionsD from "./PositionDetail";
-import Drills from "./Drills";
+import Drills from "./Transiciones";
+import SavedCombos from "./SavedCombos";
 import FullscreenModal from "../components/FullScreenModal";
 
 const HEADER_HEIGHT = 40;
@@ -139,7 +140,7 @@ const Layout: React.FC = () => {
       <FullscreenModal open={!!openModal} onClose={() => setOpenModal(null)}>
         {openModal === "positions_detail" && <PositionsD />}
         {openModal === "positions" && <Positions />}
-        {openModal === "drills" && <Drills />}
+        {openModal === "transiciones" && <Transiciones />}
       </FullscreenModal>
     </>
   );

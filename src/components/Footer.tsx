@@ -1,13 +1,13 @@
 import React from 'react';
-import { FaHome, FaSearch, FaDumbbell } from 'react-icons/fa';
+import { FaList, FaSearch, FaDumbbell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Header: React.FC = () => {
   return (
     <div style={headerStyle}>
-      <Link to="/" style={buttonStyle}>
-        <FaHome size={20} />
-        <span style={labelStyle}>Casa</span>
+      <Link to="/SavedCombos" style={buttonStyle}>
+        <FaList size={20} />
+        <span style={labelStyle}>Listas</span>
       </Link>
 
       <Link to="/Positions" style={buttonStyle}>
@@ -15,9 +15,9 @@ const Header: React.FC = () => {
         <span style={labelStyle}>Buscar</span>
       </Link>
 
-      <Link to="/Drills" style={buttonStyle}>
+      <Link to="/Transiciones" style={buttonStyle}>
         <FaDumbbell size={20} />
-        <span style={labelStyle}>Drills</span>
+        <span style={labelStyle}>Transiciones</span>
       </Link>
     </div>
   );

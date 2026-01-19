@@ -6,10 +6,6 @@
   --primary: #646cff;
 }
 
-/* =========================
-   RESET / BASE
-   ========================= */
-
 *,
 *::before,
 *::after {
@@ -23,21 +19,17 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* 🔒 bloquea swipe lateral */
+  overflow-x: hidden;
 }
 
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  overflow: hidden;          /* 🔒 bloquea scroll web */
-  overscroll-behavior: none; /* 🔒 quita bounce */
+  overflow: hidden;
+  overscroll-behavior: none;
   touch-action: manipulation;
 }
-
-/* =========================
-   LINKS
-   ========================= */
 
 a {
   color: var(--primary);
@@ -57,10 +49,9 @@ a:hover {
   display: flex;
   flex-direction: column;
   background-color: var(--bg-color);
-  touch-action: pan-y; /* ✅ solo scroll vertical */
+  touch-action: pan-y;
 }
 
-/* ÚNICO SCROLL PERMITIDO */
 .content {
   flex: 1;
   overflow-y: auto;
@@ -68,65 +59,7 @@ a:hover {
   max-width: 100vw;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  padding-bottom: 40px; /* altura footer mobile */
-}
-
-/* =========================
-   DESKTOP LAYOUT
-   ========================= */
-
-.layout-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr 1fr;
-  gap: 20px;
-  padding: 20px;
-  min-height: 100vh;
-}
-
-.layout-card {
-  background: var(--card-bg);
-  border-radius: 16px;
-  padding: 20px;
-  overflow-y: auto;
-  height: 100%;
-}
-
-/* Imagen responsive */
-.layout-card img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 12px;
-}
-
-/* =========================
-   FOOTER FIJO
-   ========================= */
-
-.footer-fixed {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 40px;
-  background: rgba(17, 17, 17, 0.9);
-  border-top: 1px solid #2a2a2a;
-  z-index: 1000;
-}
-
-/* =========================
-   MOBILE
-   ========================= */
-
-@media (max-width: 768px) {
-  .layout-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .layout-card:nth-child(1),
-  .layout-card:nth-child(3) {
-    display: none;
-  }
+  padding-bottom: 40px;
 }
 
 /* =========================

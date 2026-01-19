@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../services/supabaseClient';
-import FullscreenModal from "../components/FullscreenModal";
+import styles from './Positions.module.css';
+
 interface Position {
   id: number;
   name_es: string;
@@ -49,119 +50,54 @@ const Positions: React.FC = () => {
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
-    <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
-      <h1 style={{ fontSize: 'clamp(20px, 3vw, 28px)' }}>Posiciones</h1>
+    <div className={styles.positionsPage}>
+      <div className={styles.positionsHeader}>
+        <h1>Posiciones</h1>
 
-      <input
-        type="text"
-        placeholder="Filtrar por nombre..."
-        value={filter}
-        onChange={(e) => {
-          setFilter(e.target.value);
-          setPage(0);
-        }}
-        style={{
-          padding: '8px',
-          width: '100%',
-          marginBottom: '20px',
-          borderRadius: '6px',
-          boxSizing: 'border-box',
-          fontSize: 'clamp(12px, 2vw, 16px)',
-        }}
-      />
+        <input
+          type="text"
+          placeholder="Filtrar por nombre..."
+          value={filter}
+          onChange={(e) => {
+            setFilter(e.target.value);
+            setPage(0);
+          }}
+        />
+      </div>
 
-      {loading ? (
-        <p style={{ fontSize: 'clamp(12px, 2vw, 16px)' }}>Cargando...</p>
-      ) : positions.length === 0 ? (
-        <p style={{ fontSize: 'clamp(12px, 2vw, 16px)' }}>No hay posiciones que coincidan.</p>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {positions.map((pos) => (
-            <Link
-              key={pos.id}
-              to={`/positions/${pos.id}`}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                border: '1px solid #2a2a2a',
-                borderRadius: '8px',
-                padding: '12px',
-                backgroundColor: '#1a1a1a',
-                width: '100%',
-                textDecoration: 'none',
-                color: 'inherit',
-                transition: 'transform 0.2s, box-shadow 0.2s',
-              }}
-            >
-              <div
-                style={{
-                  width: '30%',
-                  maxWidth: '140px',
-                  aspectRatio: '1 / 1',
-                  borderRadius: '8px',
-                  overflow: 'hidden',
-                  flexShrink: 0,
-                  marginRight: '16px',
-                  background: '#222',
-                }}
-              >
-                <img
-                  src={pos.image}
-                  alt={pos.name_en}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
+      <div className={styles.positionsList}>
+        {loading ? (
+          <p>Cargando...</p>
+        ) : positions.length === 0 ? (
+          <p>No hay posiciones que coincidan.</p>
+        ) : (
+          positions.map((pos) => (
+            <Link key={pos.id} to={`/positions/${pos.id}`} className={styles.positionItem}>
+              <div className={styles.positionImage}>
+                <img src={pos.image} alt={pos.name_en} />
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexGrow: 1 }}>
-                <span style={{ fontWeight: 'bold', fontSize: 'clamp(14px, 2vw, 18px)' }}>
-                  🇪🇸 {pos.name_es}
-                </span>
-                <span style={{ color: '#555', fontSize: 'clamp(12px, 1.8vw, 16px)' }}>
-                  🇬🇧 {pos.name_en}
-                </span>
-                <span
-                  style={{
-                    color: '#888',
-                    fontStyle: 'italic',
-                    fontSize: 'clamp(11px, 1.6vw, 14px)',
-                  }}
-                >
-                  🇯🇵 {pos.name_jp}
-                </span>
+              <div className={styles.positionInfo}>
+                <strong>🇪🇸 {pos.name_es}</strong>
+                <span>🇬🇧 {pos.name_en}</span>
+                <em>🇯🇵 {pos.name_jp}</em>
               </div>
             </Link>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
 
       {totalPages > 1 && (
-        <div style={{ marginTop: '20px', textAlign: 'center' }}>
-          <button
-            onClick={() => setPage((p) => Math.max(p - 1, 0))}
-            disabled={page === 0}
-            style={{
-              marginRight: '10px',
-              padding: '8px 16px',
-              fontSize: 'clamp(12px, 1.8vw, 16px)',
-            }}
-          >
+        <div className={styles.positionsPagination}>
+          <button onClick={() => setPage((p) => Math.max(p - 1, 0))} disabled={page === 0}>
             Anterior
           </button>
-          <span style={{ fontSize: 'clamp(12px, 1.8vw, 16px)' }}>
+          <span>
             Página {page + 1} de {totalPages}
           </span>
           <button
             onClick={() => setPage((p) => Math.min(p + 1, totalPages - 1))}
             disabled={page + 1 >= totalPages}
-            style={{
-              marginLeft: '10px',
-              padding: '8px 16px',
-              fontSize: 'clamp(12px, 1.8vw, 16px)',
-            }}
           >
             Siguiente
           </button>
