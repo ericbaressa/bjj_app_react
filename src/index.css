@@ -11,6 +11,8 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  overflow: hidden;          /* 🔒 bloquea scroll web */
+  overscroll-behavior: none; /* 🔒 quita el bounce */
 }
 
 /* Links */
