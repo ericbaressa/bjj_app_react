@@ -6,7 +6,7 @@ const Header = () => {
       <div className={styles.side}></div>
 
       <div className={styles.center}>
-        <img src="public/icon-192.png" alt="Logo" className={styles.logo} />
+        <img src="src/assets/icon-192.png" alt="Logo" className={styles.logo} />
         <span className={styles.title}>BjjARESSAL</span>
       </div>
 
