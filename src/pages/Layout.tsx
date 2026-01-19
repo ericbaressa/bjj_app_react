@@ -45,25 +45,20 @@ const Layout: React.FC = () => {
   /* =====================
      📱 MOBILE
      ===================== */
-  if (isMobile) {
+    if (isMobile) {
     return (
-      <>
-        <div
-          style={{
-            paddingBottom: HEADER_HEIGHT,
-            minHeight: "100vh",
-            boxSizing: "border-box",
-          }}
-        >
+      <div className="app">
+        <div className="content">
           <Outlet />
         </div>
-
+  
         <div style={footerStyle}>
           <Footer />
         </div>
-      </>
+      </div>
     );
   }
+    
 
   /* =====================
      💻 DESKTOP
