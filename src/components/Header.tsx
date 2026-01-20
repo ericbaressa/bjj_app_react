@@ -1,4 +1,5 @@
 import styles from "./Header.module.css";
+import logo from "../assets/icon-192.png";
 
 const Header = () => {
   return (
@@ -6,7 +7,7 @@ const Header = () => {
       <div className={styles.side}></div>
 
       <div className={styles.center}>
-        <img src="src/assets/icon-192.png" alt="Logo" className={styles.logo} />
+        <img src={logo} alt="Logo" className={styles.logo} />
         <span className={styles.title}>BjjARESSAL</span>
       </div>
 
