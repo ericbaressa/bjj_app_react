@@ -11,7 +11,7 @@ interface Position {
   id: number;
   name_es: string;
   name_en: string;
-  image: string;
+  image_thumb: string;
 }
 
 interface ComboStep {
@@ -121,7 +121,7 @@ const SavedCombos: React.FC = () => {
             {steps.map((s, index) => (
               <div key={s.step_index} className={styles.step}>
                 <div className={styles.card}>
-                  <img src={s.position.image} alt={s.position.name_en} />
+                  <img src={s.position.image_thumb} alt={s.position.name_en} loading="lazy" />
                   <div className={styles.text}>
                     <strong>{s.position.name_es}</strong>
                     <p>{s.position.name_en}</p>
