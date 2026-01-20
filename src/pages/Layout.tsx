@@ -132,7 +132,7 @@ const Layout: React.FC = () => {
           >
             ⤢
           </button>
-          <PositionsD />
+          <Outlet />
         </div>
 
         {/* Derecha: sección futura */}
