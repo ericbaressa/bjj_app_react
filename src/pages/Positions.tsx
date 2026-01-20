@@ -9,6 +9,7 @@ interface Position {
   name_en: string;
   name_jp: string;
   image: string;
+  image_thumb: string;
 }
 
 const PAGE_SIZE = 10;
@@ -74,7 +75,7 @@ const Positions: React.FC = () => {
           positions.map((pos) => (
             <Link key={pos.id} to={`/positions/${pos.id}`} className={styles.positionItem}>
               <div className={styles.positionImage}>
-                <img src={pos.image} alt={pos.name_en} />
+                <img src={pos.image_thumb} alt={pos.name_en} loading="lazy" />
               </div>
 
               <div className={styles.positionInfo}>
