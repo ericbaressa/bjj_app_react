@@ -21,7 +21,7 @@ const footerStyle = {
   height: HEADER_HEIGHT,
   background: "#111",
   borderTop: "1px solid #2a2a2a",
-  zIndex: 1000,
+  zIndex: 1000
 };
 
 const cardStyle = {
@@ -84,13 +84,16 @@ const Layout: React.FC = () => {
     <>
       <div
         style={{
+          position: "absolute",
+          top: HEADER_HEIGHT,      // 👈 reserva header
+          left: 0,
+          right: 0,
+          bottom: 0,              // 👈 corta el alto aquí
           display: "grid",
           gridTemplateColumns: "1fr 1.2fr 1fr",
           gap: "20px",
           padding: "20px",
-          paddingBottom: HEADER_HEIGHT + 20,
-          minHeight: "100vh",
-          height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+          paddingBottom: "20px",  // 👈 ESTE espacio ahora SÍ se ve
           boxSizing: "border-box",
         }}
       >

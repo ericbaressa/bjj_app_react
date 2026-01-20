@@ -7,17 +7,16 @@
   padding: 0 16px;
   display: flex;
   align-items: center;
-  justify-content: center;
   background: #111;
   border-bottom: 1px solid #2a2a2a;
   z-index: 3000;
 }
 
-.side {
-  flex: 1;
-}
-
+/* Este bloque deja el logo centrado sin afectar al botón */
 .center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -35,4 +34,33 @@
   color: white;
 }
 
+/* Esto asegura que el botón quede pegado a la derecha */
+.side {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid #2a2a2a;
+  background: #1a1a1a;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.logoutBtn:hover {
+  transform: translateY(-2px);
+  background: #2a2a2a;
+}
+
+.logoutIcon {
+  width: 22px;
+  height: 22px;
+}

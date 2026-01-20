@@ -1,86 +1,113 @@
 .positionsPage {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .positionsHeader {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: var(--bg-color);
-    padding: 16px 20px;
-    border-bottom: 1px solid #2a2a2a;
-  }
-  
-  .positionsHeader h1 {
-    margin: 0 0 12px 0;
-    font-size: clamp(20px, 3vw, 28px);
-  }
-  
-  .positionsHeader input {
-    width: 100%;
-    padding: 8px;
-    border-radius: 6px;
-    border: none;
-    font-size: clamp(12px, 2vw, 16px);
-  }
-  
-  .positionsList {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  .positionItem {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 12px;
-    border-radius: 8px;
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  .positionImage {
-    width: 30%;
-    max-width: 140px;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    border-radius: 8px;
-    background: #222;
-    flex-shrink: 0;
-  }
-  
-  .positionImage img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .positionInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  
-  .positionInfo span {
-    color: #555;
-  }
-  
-  .positionInfo em {
-    color: #888;
-    font-style: italic;
-  }
-  
-  .positionsPagination {
-    padding: 12px;
-    border-top: 1px solid #2a2a2a;
-    text-align: center;
-  }
-  
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   HEADER
+========================= */
+.positionsHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-color);
+  padding: 16px 20px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.positionsHeader h1 {
+  margin: 0 0 12px 0;
+  font-size: clamp(18px, 3vw, 28px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.positionsHeader input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  font-size: clamp(12px, 2vw, 16px);
+}
+
+/* =========================
+   LIST
+========================= */
+.positionsList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.positionItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #2a2a2a;
+  border: 1px solid #2a2a2a;
+  text-decoration: none;
+  color: inherit;
+}
+
+.positionImage {
+  width: 30%;
+  max-width: 140px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #222;
+  flex-shrink: 0;
+}
+
+.positionImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.positionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0; /* IMPORTANTE para que funcione el ellipsis */
+}
+
+.positionInfo strong,
+.positionInfo span,
+.positionInfo em {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.positionInfo strong {
+  font-size: clamp(14px, 2vw, 18px);
+}
+
+.positionInfo span {
+  font-size: clamp(12px, 1.8vw, 16px);
+  color: #555;
+}
+
+.positionInfo em {
+  font-size: clamp(12px, 1.6vw, 14px);
+  color: #888;
+  font-style: italic;
+}
+
+/* =========================
+   PAGINACIÓN
+========================= */
+.positionsPagination {
+  padding: 12px;
+  border-top: 1px solid #2a2a2a;
+  text-align: center;
+}

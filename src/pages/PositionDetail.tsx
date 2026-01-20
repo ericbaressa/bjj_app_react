@@ -76,59 +76,101 @@ const PositionDetail: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h1 style={{ marginBottom: '20px' }}>
-        {currentPosition.name_es} / {currentPosition.name_en} / {currentPosition.name_jp}
-      </h1>
-
-      {/* Imagen */}
-      <img
-        src={currentPosition.image}
-        alt={currentPosition.name_en}
-        style={{
-          width: '100%',
-          borderRadius: '12px',
-          marginBottom: '20px',
-          objectFit: 'cover',
-        }}
-      />
-
-      {/* Video */}
-      {currentPosition.video && (
-        <div style={{ marginBottom: '20px', position: 'relative', paddingTop: '56.25%' }}>
-          <iframe
-            src={getYouTubeEmbedUrl(currentPosition.video)}
-            title={currentPosition.name_en}
-            allowFullScreen
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              border: 'none',
-              borderRadius: '12px',
-            }}
-          />
-        </div>
-      )}
-
-      {/* Tips */}
-      {currentPosition.tips && (
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden", // 🔒 evita scroll global
+      }}
+    >
+      {/* HEADER FIJO */}
         <div
           style={{
-            backgroundColor: '#f9f9f9',
-            padding: '16px',
-            borderRadius: '8px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            position: "sticky",
+            top: 0,
+            zIndex: 10,
+            background: "#1a1a1a",   // mismo fondo que el resto
+            padding: "20px",
+            borderBottom: "1px solid #2a2a2a",
           }}
         >
-          <h3 style={{ marginBottom: '10px' }}>Tips:</h3>
-          <p style={{ margin: 0 }}>{currentPosition.tips}</p>
+          <h1 style={{
+            margin: 0,
+            fontSize: "clamp(16px, 2.5vw, 22px)",
+            lineHeight: 1.2,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis"
+          }}>
+            {currentPosition.name_es} / {currentPosition.name_en} / {currentPosition.name_jp}
+          </h1>
         </div>
-      )}
+  
+      {/* CONTENIDO SCROLLABLE */}
+      <div
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          padding: "20px",
+        }}
+      >
+        {/* Imagen */}
+        <img
+          src={currentPosition.image}
+          alt={currentPosition.name_en}
+          style={{
+            width: "100%",
+            borderRadius: "12px",
+            marginBottom: "20px",
+            objectFit: "cover",
+          }}
+        />
+  
+        {/* Video */}
+        {currentPosition.video && (
+          <div
+            style={{
+              marginBottom: "20px",
+              position: "relative",
+              paddingTop: "56.25%",
+            }}
+          >
+            <iframe
+              src={getYouTubeEmbedUrl(currentPosition.video)}
+              title={currentPosition.name_en}
+              allowFullScreen
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                border: "none",
+                borderRadius: "12px",
+              }}
+            />
+          </div>
+        )}
+  
+        {/* Tips */}
+        {currentPosition.tips && (
+          <div
+            style={{
+              backgroundColor: "#1a1a1a",
+              padding: "16px",
+              borderRadius: "8px",
+              border: "1px solid #2a2a2a",
+            }}
+          >
+            <h3 style={{ marginBottom: "10px" }}>Tips</h3>
+            <p style={{ margin: 0 }}>{currentPosition.tips}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
+  
 };
 
 export default PositionDetail;
