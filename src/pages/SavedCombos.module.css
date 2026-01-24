@@ -1,8 +1,9 @@
 .page {
   padding: 20px;
-  overflow-x: hidden; 
+  overflow-x: hidden;
 }
 
+/* LISTA DE COMBOS */
 .listContainer {
   width: 90%;
   max-height: 120px;
@@ -37,9 +38,12 @@
   margin: 20px 0;
 }
 
+/* TIMELINE */
 .timelineContainer {
-  width: 100%;
-  margin-top: 20px;
+  width: 90%;
+  margin: 20px auto 0;
+  display: flex;
+  justify-content: center;
   box-sizing: border-box;
 }
 
@@ -47,19 +51,22 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; /* centra todos los steps */
 }
 
 .step {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; /* centra tarjeta y flecha */
+  justify-content: center;
 }
 
+/* TARJETA */
 .card {
-  width: 100%;
-  max-width: 700px;  /* límite para que no se vea gigante en pantallas grandes */
+  width: 90%;
+  max-width: 700px;
+  margin: 0 auto; /* centra la tarjeta */
   display: flex;
   gap: 12px;
   align-items: center;
@@ -77,6 +84,7 @@
   object-fit: cover;
 }
 
+/* TEXTO */
 .text {
   display: flex;
   flex-direction: column;
@@ -88,6 +96,7 @@
   color: #666;
 }
 
+/* FLECHA */
 .arrow {
   font-size: 28px;
   margin: 8px 0;

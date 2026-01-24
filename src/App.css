@@ -76,15 +76,15 @@
 }
 .positionsHeader input {
   width: 100%;
-  padding: 8px;
+  padding: 20px;
   border-radius: 6px;
   border: none;
   font-size: clamp(12px, 2vw, 16px);
 }
 
 .content {
-  height: 100%;
-  overflow-y:auto;
+  padding-top: 20px; /* altura del header */
+  box-sizing: border-box;
 }
 
 .app {
@@ -116,4 +116,21 @@
   border: 1px solid #2a2a2a;
   cursor: pointer;
   color: #ffffff;
+}
+
+html, body {
+  width: 390px;
+  max-width: 390px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  background: #000;
+}
+
+.app-viewport {
+  width: 390px;
+  max-width: 390px;
+  margin: 0 auto;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
 }

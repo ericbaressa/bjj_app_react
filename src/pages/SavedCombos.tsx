@@ -88,7 +88,8 @@ const SavedCombos: React.FC = () => {
   };
 
   return (
-    <div className="positionsHeader_h1">
+<div className="page">
+  <div className="positionsHeader_h1">
       <h1>Combos guardados</h1>
 
       <div className={styles.listContainer}>
@@ -133,6 +134,7 @@ const SavedCombos: React.FC = () => {
         )}
       </div>
     </div>
+  </div> 
   );
 };
 
