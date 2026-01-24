@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import { supabase } from "../services/supabaseClient";
 import styles from "./Transiciones.module.css";
 import "../App.css";
@@ -13,7 +13,7 @@ interface Position {
 }
 
 const MAX_VISIBLE = 5;
-const OFFSET = 40; // viejas a la izquierda
+const OFFSET = 40;
 
 const Sequence: React.FC = () => {
   const [history, setHistory] = useState<Position[]>([]);
@@ -27,6 +27,8 @@ const Sequence: React.FC = () => {
   const [comboName, setComboName] = useState("");
   const [tempComboName, setTempComboName] = useState("");
   const [openSaveModal, setOpenSaveModal] = useState(false);
+
+  const stackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchAllPositions();
@@ -50,12 +52,53 @@ const Sequence: React.FC = () => {
     );
   }, [filter, available]);
 
-  const selectPosition = (pos: Position) => {
+  const selectPosition = async (pos: Position) => {
     setHistory((h) => [...h, pos]);
+    setLoading(true);
+
+    const { data: toIdsData } = await supabase
+      .from("positions_transitions")
+      .select("to_id")
+      .eq("from_id", pos.id);
+
+    const uniqueToIds = Array.from(new Set(toIdsData?.map((x: any) => x.to_id)));
+
+    const { data: positionsData } = await supabase
+      .from("positions")
+      .select("*")
+      .in("id", uniqueToIds);
+
+    setAvailable(positionsData || []);
+    setLoading(false);
   };
 
-  const undo = () => {
-    setHistory((h) => h.slice(0, -1));
+  const undo = async () => {
+    setHistory((h) => {
+      const newHistory = [...h];
+      newHistory.pop();
+
+      const lastPos = newHistory[newHistory.length - 1];
+
+      if (!lastPos) {
+        fetchAllPositions();
+      } else {
+        supabase
+          .from("positions_transitions")
+          .select("to_id")
+          .eq("from_id", lastPos.id)
+          .then(async ({ data }) => {
+            const ids = data?.map((x: any) => x.to_id) || [];
+            const { data: positionsData } = await supabase
+              .from("positions")
+              .select("*")
+              .in("id", ids);
+
+            setAvailable(positionsData || []);
+          });
+      }
+
+      return newHistory;
+    });
   };
 
   const reset = () => {
@@ -124,16 +167,22 @@ const Sequence: React.FC = () => {
         {history.length === 0 && <h1>Escoge posiciones</h1>}
       </div>
 
-      {/* STACK */}
       {visibleHistory.length > 0 && (
-        <div className={styles.stackHoverArea}>
+        <div className={styles.stackHoverArea} ref={stackRef}>
           <div className={styles.stack}>
             {visibleHistory.map((p, index) => {
               const centerIndex = visibleHistory.length - 1;
               const baseOffset = (index - centerIndex) * OFFSET;
 
+              const distance = centerIndex - index;
               const isHovered = hoverIndex === index;
-              const scale = isHovered ? 1.1 : 1;
+
+              // 🔥 ORIENTACIÓN B — inclinadas hacia atrás
+              const angle = 20 * distance; // rotateX positivo
+              const translateZ = -20 * distance;
+              const translateY = distance * 2;
+              const scale = isHovered ? 1: 1;
+
               const z = isHovered ? 999 : index + 1;
 
               return (
@@ -143,9 +192,16 @@ const Sequence: React.FC = () => {
                   onMouseEnter={() => setHoverIndex(index)}
                   onMouseLeave={() => setHoverIndex(null)}
                   style={{
-                    transform: `translateX(${baseOffset}px) scale(${scale})`,
+                    transform: `
+                      translateX(${baseOffset}px)
+                      translateY(${translateY}px)
+                      translateZ(${translateZ}px)
+                      rotateX(${angle}deg)
+                      scale(${scale})
+                    `,
+                    transformStyle: "preserve-3d",
                     zIndex: z,
-                    transition: "transform 0.2s ease, z-index 0.2s ease",
+                    transition: "transform 0.25s ease, z-index 0.25s ease",
                   }}
                 >
                   <img src={p.image} alt={p.name_en} />
@@ -157,7 +213,6 @@ const Sequence: React.FC = () => {
         </div>
       )}
 
-      {/* TOPBAR */}
       <div className="topbar">
         <input
           value={filter}
@@ -185,7 +240,6 @@ const Sequence: React.FC = () => {
         </Link>
       </div>
 
-      {/* LISTA */}
       <div className={styles.list}>
         {loading ? (
           <p>Cargando...</p>
@@ -208,18 +262,20 @@ const Sequence: React.FC = () => {
         )}
       </div>
 
-      {/* MODAL GUARDAR */}
       {openSaveModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h3>Nombre de la combinación</h3>
+
             <input
               value={tempComboName}
               onChange={(e) => setTempComboName(e.target.value)}
               placeholder="Ej: Combo 1"
             />
+
             <div className={styles.modalButtons}>
               <button onClick={() => setOpenSaveModal(false)}>Cancelar</button>
+
               <button
                 onClick={() => {
                   setComboName(tempComboName);
