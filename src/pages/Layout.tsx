@@ -9,7 +9,6 @@ import FullscreenModal from "../components/FullScreenModal";
 import "../App.css";
 
 const HEADER_HEIGHT = 40;
-const FOOTER_HEIGHT = 40;
 
 const footerStyle = {
   position: "fixed" as const,
@@ -28,125 +27,100 @@ const cardStyle = {
   padding: "20px",
   overflowY: "auto" as const,
   height: "100%",
-  width:"100%",
+  width: "100%",
 };
 
 const Layout: React.FC = () => {
+  // Detecta si es móvil
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  // ✅ ESTADO DEL MODAL
-  const [openModal, setOpenModal] = useState<null | "home" | "positions" | "drills">(null);
+  // Detecta orientación (portrait = vertical)
+  const [isPortrait, setIsPortrait] = useState(
+    window.matchMedia("(orientation: portrait)").matches
+  );
 
+  // Mantener la lógica original por si quieres reactivarla
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+
+    const mq = window.matchMedia("(orientation: portrait)");
+    const orientationHandler = (e: MediaQueryListEvent) => {
+      setIsPortrait(e.matches);
+    };
+    mq.addEventListener("change", orientationHandler);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+      mq.removeEventListener("change", orientationHandler);
+    };
   }, []);
+
+  // Estado del modal
+  const [openModal, setOpenModal] = useState<
+    null | "home" | "positions" | "drills" | "positions_detail"
+  >(null);
 
   /* =====================
      📱 MOBILE
      ===================== */
-     if (isMobile) {
+  if (isMobile) {
+    // 🔒 Bloqueo de rotación: si gira, seguimos mostrando vertical
+    if (!isPortrait) {
       return (
-        
-        <div className="app" >
-          <div className="content" >
-            <Outlet />
-          </div>
-    
-          <div style={footerStyle}>
-            <Footer />
-          </div>
+        <div
+          style={{
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "#000",
+            color: "#fff",
+            textAlign: "center",
+            padding: "20px"
+          }}
+        >
+          <h2>Por favor, mantén el móvil en vertical</h2>
+          <p style={{ opacity: 0.8 }}>La app está optimizada solo para vista vertical.</p>
         </div>
       );
     }
-    
 
-  /* =====================
-     💻 DESKTOP
-     ===================== */
-  return (
-    <>
-      <div
-        style={{
-          position: "absolute",
-          top: HEADER_HEIGHT,      // 👈 reserva header
-          left: 0,
-          right: 0,
-          bottom: 0,              // 👈 corta el alto aquí
-          display: "grid",
-          gridTemplateColumns: "1fr 1.2fr 1fr",
-          gap: "5px",
-          padding: "20px",
-          paddingBottom: "20px",  // 👈 ESTE espacio ahora SÍ se ve
-          boxSizing: "border-box",
-        }}
-      >
-        {/* Izquierda: posiciones (fijo) */}
-        <div style={cardStyle}>
-        <button
-            onClick={() => setOpenModal("positions")}
-            style={{
-              float: "right",
-              padding: "6px 10px",
-              borderRadius: "8px",
-              border: "none",
-              background: "#222",
-              color: "#fff",
-              cursor: "pointer",
-            }}
-          >
-            ⤢
-          </button>
-          <Positions />
-        </div>
-
-        {/* Centro: aquí se carga Home / Positions / Detail */}
-        <div style={cardStyle}>
-        <button
-            onClick={() => setOpenModal("positions_detail")}
-            style={{
-              float: "right",
-              padding: "6px 10px",
-              borderRadius: "8px",
-              border: "none",
-              background: "#222",
-              color: "#fff",
-              cursor: "pointer",
-            }}
-          >
-            ⤢
-          </button>
+    return (
+      <div className="app">
+        <div className="content">
           <Outlet />
         </div>
 
-        {/* Derecha: sección futura */}
-        <div style={cardStyle}>
-        <button
-            onClick={() => setOpenModal("drills")}
-            style={{
-              float: "right",
-              padding: "6px 10px",
-              borderRadius: "8px",
-              border: "none",
-              background: "#222",
-              color: "#fff",
-              cursor: "pointer",
-            }}
-          >
-            ⤢
-          </button>
-          <Drills />
+        <div style={footerStyle}>
+          <Footer />
         </div>
       </div>
+    );
+  }
 
-      {/* MODAL */}
-      <FullscreenModal open={!!openModal} onClose={() => setOpenModal(null)}>
-        {openModal === "positions_detail" && <PositionsD />}
-        {openModal === "positions" && <Positions />}
-        {openModal === "transiciones" && <Transiciones />}
-      </FullscreenModal>
-    </>
+  /* =====================
+     💻 DESKTOP BLOQUEADO
+     ===================== */
+  return (
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "#000",
+        color: "#fff",
+        textAlign: "center",
+        padding: "20px"
+      }}
+    >
+      <h2 style={{ marginBottom: "10px" }}>Solo disponible en móvil</h2>
+      <p style={{ opacity: 0.8 }}>
+        Abre esta aplicación desde tu teléfono para continuar.
+      </p>
+    </div>
   );
 };
 
