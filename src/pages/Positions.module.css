@@ -16,14 +16,6 @@
   border-bottom: 1px solid #2a2a2a;
 }
 
-.positionsHeader h1 {
-  margin: 0 0 12px 0;
-  font-size: clamp(18px, 3vw, 28px);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .positionsHeader input {
   width: 100%;
   padding: 8px;
@@ -62,7 +54,7 @@
   aspect-ratio: 1 / 1;
   overflow: hidden;
   border-radius: 8px;
-  background: #222;
+  background: #2a2a2a;
   flex-shrink: 0;
 }
 

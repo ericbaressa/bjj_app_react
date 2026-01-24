@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../services/supabaseClient";
 import styles from "./SavedCombos.module.css";
+import "../App.css";
 
 interface Combo {
   id: number;
@@ -12,11 +13,6 @@ interface Position {
   name_es: string;
   name_en: string;
   image_thumb: string;
-}
-
-interface ComboStep {
-  position_id: number;
-  step_index: number;
 }
 
 interface ComboStepWithPosition {
@@ -92,8 +88,8 @@ const SavedCombos: React.FC = () => {
   };
 
   return (
-    <div className={styles.page}>
-      <h2>Combos guardados</h2>
+    <div className="positionsHeader_h1">
+      <h1>Combos guardados</h1>
 
       <div className={styles.listContainer}>
         {combos.map((combo) => (

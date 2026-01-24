@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "../services/supabaseClient";
 import styles from "./Transiciones.module.css";
-import SavedCombos from "./SavedCombos";
+import "../App.css";
 import { Link } from "react-router-dom";
+
 interface Position {
   id: number;
   name_es: string;
@@ -11,101 +12,58 @@ interface Position {
   image: string;
 }
 
+const MAX_VISIBLE = 5;
+const OFFSET = 40; // viejas a la izquierda
+
 const Sequence: React.FC = () => {
   const [history, setHistory] = useState<Position[]>([]);
   const [available, setAvailable] = useState<Position[]>([]);
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+
   const [saving, setSaving] = useState(false);
   const [comboName, setComboName] = useState("");
-
-  // ✅ ESTADOS PARA EL MODAL
-  const [openSaveModal, setOpenSaveModal] = useState(false);
   const [tempComboName, setTempComboName] = useState("");
+  const [openSaveModal, setOpenSaveModal] = useState(false);
 
-  // Cargar todas las posiciones al inicio
   useEffect(() => {
     fetchAllPositions();
   }, []);
 
   const fetchAllPositions = async () => {
     setLoading(true);
-
-    const { data } = await supabase
-      .from("positions")
-      .select("*");
-
+    const { data } = await supabase.from("positions").select("*");
     setAvailable(data || []);
     setLoading(false);
   };
 
-  // FILTRO por texto (sobre available)
   const filteredAvailable = useMemo(() => {
     const text = filter.trim().toLowerCase();
     if (!text) return available;
-    return available.filter((p) =>
-      p.name_es.toLowerCase().includes(text) ||
-      p.name_en.toLowerCase().includes(text) ||
-      p.name_jp.toLowerCase().includes(text)
+    return available.filter(
+      (p) =>
+        p.name_es.toLowerCase().includes(text) ||
+        p.name_en.toLowerCase().includes(text) ||
+        p.name_jp.toLowerCase().includes(text)
     );
   }, [filter, available]);
 
-  // Seleccionar una posición
-  const selectPosition = async (pos: Position) => {
+  const selectPosition = (pos: Position) => {
     setHistory((h) => [...h, pos]);
-    setLoading(true);
-  
-    // 1) obtener to_id únicos desde transitions
-    const { data: toIdsData } = await supabase
-      .from("positions_transitions")
-      .select("to_id")
-      .eq("from_id", pos.id);
-  
-    const uniqueToIds = Array.from(new Set(toIdsData?.map((x: any) => x.to_id)));
-  
-    // 2) traer posiciones disponibles
-    const { data: positionsData } = await supabase
-      .from("positions")
-      .select("*")
-      .in("id", uniqueToIds);
-  
-    setAvailable(positionsData || []);
-    setLoading(false);
   };
 
-  // DESHACER último movimiento
-  const undo = async () => {
-    setHistory((h) => {
-      const newHistory = [...h];
-      newHistory.pop();
-
-      const lastPos = newHistory[newHistory.length - 1];
-
-      if (!lastPos) {
-        fetchAllPositions();
-      } else {
-        supabase
-          .from("positions_transitions")
-          .select("*")
-          .eq("from_id", lastPos.id)
-          .then(({ data }) => {
-            setAvailable(data || []);
-          });
-      }
-
-      return newHistory;
-    });
+  const undo = () => {
+    setHistory((h) => h.slice(0, -1));
   };
 
-  // RESET total
   const reset = () => {
     setHistory([]);
     setFilter("");
     fetchAllPositions();
   };
 
-  // GUARDAR combinación
   const saveCombo = async (name?: string) => {
     const comboNameToUse = name ?? comboName;
 
@@ -121,7 +79,6 @@ const Sequence: React.FC = () => {
 
     setSaving(true);
 
-    // 1) crear combo
     const { data: comboData, error: comboError } = await supabase
       .from("combos")
       .insert({ name: comboNameToUse })
@@ -136,7 +93,6 @@ const Sequence: React.FC = () => {
 
     const comboId = comboData.id;
 
-    // 2) insertar pasos
     const steps = history.map((p, index) => ({
       combo_id: comboId,
       position_id: p.id,
@@ -159,56 +115,77 @@ const Sequence: React.FC = () => {
     setSaving(false);
   };
 
-  return (
-    <div className={styles.page}>
+  const visibleHistory = [...history].slice(-MAX_VISIBLE);
 
-      <div className={styles.history}>
-        {history.length === 0 ? (
-          <p>Elige una posición para empezar</p>
-        ) : (
-          history.map((p) => (
-            <div key={p.id} className={styles.historyItem}>
-              <img src={p.image} alt={p.name_en} />
-              <span>{p.name_es}</span>
-            </div>
-          ))
-        )}
+  return (
+    <div className="page">
+
+      <div className="positionsHeader_h1">
+        {history.length === 0 && <h1>Escoge posiciones</h1>}
       </div>
-      <div className={styles.topbar}>
-      <input
+
+      {/* STACK */}
+      {visibleHistory.length > 0 && (
+        <div className={styles.stackHoverArea}>
+          <div className={styles.stack}>
+            {visibleHistory.map((p, index) => {
+              const centerIndex = visibleHistory.length - 1;
+              const baseOffset = (index - centerIndex) * OFFSET;
+
+              const isHovered = hoverIndex === index;
+              const scale = isHovered ? 1.1 : 1;
+              const z = isHovered ? 999 : index + 1;
+
+              return (
+                <div
+                  key={p.id}
+                  className={styles.stackItem}
+                  onMouseEnter={() => setHoverIndex(index)}
+                  onMouseLeave={() => setHoverIndex(null)}
+                  style={{
+                    transform: `translateX(${baseOffset}px) scale(${scale})`,
+                    zIndex: z,
+                    transition: "transform 0.2s ease, z-index 0.2s ease",
+                  }}
+                >
+                  <img src={p.image} alt={p.name_en} />
+                  <div className={styles.lastName}>{p.name_es}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* TOPBAR */}
+      <div className="topbar">
+        <input
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Filtrar posiciones..."
         />
       </div>
-      <div className={styles.topbar}>
 
-
+      <div className="topbar">
         <button onClick={undo} disabled={history.length === 0}>
           Deshacer
         </button>
 
-        <button onClick={reset}>
-          Borrar todo
-        </button>
-
-
+        <button onClick={reset}>Borrar todo</button>
 
         <button
-        onClick={() => setOpenSaveModal(true)}
-        disabled={saving || history.length <2}
-      >
-        {saving ? "Guardando..." : "Guardar combinación"}
-      </button>
+          onClick={() => setOpenSaveModal(true)}
+          disabled={saving || history.length < 2}
+        >
+          {saving ? "Guardando..." : "Guardar combinación"}
+        </button>
 
-      <Link to="/SavedCombos" className={styles.linkButton}>
-        <button>Combos</button>
-      </Link>
-
+        <Link to="/SavedCombos">
+          <button>Combos</button>
+        </Link>
       </div>
-      
 
-
+      {/* LISTA */}
       <div className={styles.list}>
         {loading ? (
           <p>Cargando...</p>
@@ -231,7 +208,7 @@ const Sequence: React.FC = () => {
         )}
       </div>
 
-      {/* MODAL DE GUARDADO */}
+      {/* MODAL GUARDAR */}
       {openSaveModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
@@ -256,6 +233,7 @@ const Sequence: React.FC = () => {
           </div>
         </div>
       )}
+
     </div>
   );
 };

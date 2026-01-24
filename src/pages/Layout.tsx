@@ -2,15 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import Footer from "../components/Footer";
-
-import Home from "./Home";
 import Positions from "./Positions";
 import PositionsD from "./PositionDetail";
 import Drills from "./Transiciones";
-import SavedCombos from "./SavedCombos";
 import FullscreenModal from "../components/FullScreenModal";
+import "../App.css";
 
-const HEADER_HEIGHT = 56;
+const HEADER_HEIGHT = 40;
 const FOOTER_HEIGHT = 40;
 
 const footerStyle = {
@@ -30,6 +28,7 @@ const cardStyle = {
   padding: "20px",
   overflowY: "auto" as const,
   height: "100%",
+  width:"100%",
 };
 
 const Layout: React.FC = () => {
@@ -50,22 +49,8 @@ const Layout: React.FC = () => {
      if (isMobile) {
       return (
         
-        <div
-          className="app"
-          style={{
-            paddingTop: HEADER_HEIGHT,       // 👈 espacio para Header
-            paddingBottom: FOOTER_HEIGHT,    // 👈 espacio para Footer
-            minHeight: "100vh",
-            boxSizing: "border-box",
-          }}
-        >
-          <div
-            className="content"
-            style={{
-              height: "100%",
-              overflowY: "auto",
-            }}
-          >
+        <div className="app" >
+          <div className="content" >
             <Outlet />
           </div>
     
@@ -91,7 +76,7 @@ const Layout: React.FC = () => {
           bottom: 0,              // 👈 corta el alto aquí
           display: "grid",
           gridTemplateColumns: "1fr 1.2fr 1fr",
-          gap: "20px",
+          gap: "5px",
           padding: "20px",
           paddingBottom: "20px",  // 👈 ESTE espacio ahora SÍ se ve
           boxSizing: "border-box",

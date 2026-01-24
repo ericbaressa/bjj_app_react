@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../services/supabaseClient';
 import styles from './Positions.module.css';
+import "../App.css";
 
 interface Position {
   id: number;
@@ -51,19 +52,16 @@ const Positions: React.FC = () => {
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
-    <div className={styles.positionsPage}>
-      <div className={styles.positionsHeader}>
+    <div className="page">
+      <div className="positionsHeader_h1">
         <h1>Posiciones</h1>
-
-        <input
-          type="text"
-          placeholder="Filtrar por nombre..."
+        <div className="topbar">
+      <input
           value={filter}
-          onChange={(e) => {
-            setFilter(e.target.value);
-            setPage(0);
-          }}
+          onChange={(e) => setFilter(e.target.value)}
+          placeholder="Filtrar Posiciones"
         />
+      </div>
       </div>
 
       <div className={styles.positionsList}>

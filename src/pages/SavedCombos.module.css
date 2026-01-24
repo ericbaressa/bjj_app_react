@@ -4,13 +4,13 @@
 }
 
 .listContainer {
-  width: 80%;
-  max-height: 160px;
+  width: 90%;
+  max-height: 120px;
   overflow-y: auto;
   border: 1px solid #ccc;
   border-radius: 12px;
   padding: 10px;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
   box-sizing: border-box;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .comboItem:hover {
-  background: #242222;
+  background: #424141;
 }
 
 .selected {
