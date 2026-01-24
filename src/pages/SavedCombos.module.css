@@ -1,8 +1,3 @@
-.page {
-  padding: 20px;
-  overflow-x: hidden;
-}
-
 /* LISTA DE COMBOS */
 .listContainer {
   width: 90%;
@@ -45,6 +40,7 @@
   display: flex;
   justify-content: center;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .timeline {
@@ -52,6 +48,7 @@
   display: flex;
   flex-direction: column;
   align-items: center; /* centra todos los steps */
+  overflow-y: auto;
 }
 
 .step {
@@ -100,4 +97,9 @@
 .arrow {
   font-size: 28px;
   margin: 8px 0;
+}
+.scrollArea {
+  flex: 1;
+  min-height: 0;     /* 🔥 CLAVE */
+  overflow-y: auto;
 }

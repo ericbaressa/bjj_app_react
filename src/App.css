@@ -9,7 +9,7 @@
   flex-direction: column;
 
   /* 👇 ESTE es el espacio que te falta */
-  padding-top: 30px;
+  padding-top: px;
 
   /* opcional */
   box-sizing: border-box;
@@ -64,27 +64,30 @@
   right: 0;
   height: 56px;
   z-index: 2000;
-  background: #2a2a2a;
+  background: #111;
   border-bottom: 1px solid #2a2a2a;
 }
 
 .positionsHeader_h1 {
   margin: 0 0 12px 0;
   font-size: clamp(18px, 3vw, 28px);
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-top: 20px;
 }
 .positionsHeader input {
   width: 100%;
-  padding: 20px;
+  padding: 8px;
   border-radius: 6px;
   border: none;
   font-size: clamp(12px, 2vw, 16px);
 }
 
 .content {
-  padding-top: 20px; /* altura del header */
-  box-sizing: border-box;
+  flex: 1;
+  height: 100%;
+  overflow-y:auto;
 }
 
 .app {
@@ -99,7 +102,7 @@
   gap: 10px;
   padding: 12px;
   border-bottom: 1px solid #2a2a2a;
-  background: #1a1a1a;
+  background: var(--bg-color);
 }
 
 .topbar input {
@@ -112,25 +115,9 @@
 .topbar button {
   padding: 8px 12px;
   border-radius: 8px;
-  background: #2a2a2a;
+  background: #1a1a1a;
   border: 1px solid #2a2a2a;
   cursor: pointer;
   color: #ffffff;
 }
 
-html, body {
-  width: 390px;
-  max-width: 390px;
-  margin: 0 auto;
-  overflow-x: hidden;
-  background: #000;
-}
-
-.app-viewport {
-  width: 390px;
-  max-width: 390px;
-  margin: 0 auto;
-  height: 100vh;
-  overflow: hidden;
-  background: #000;
-}

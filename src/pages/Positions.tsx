@@ -53,56 +53,59 @@ const Positions: React.FC = () => {
 
   return (
     <div className="page">
+
+      {/* 🔥 TÍTULO + TOPBAR FIJOS */}
       <div className="positionsHeader_h1">
         <h1>Posiciones</h1>
+
         <div className="topbar">
-      <input
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          placeholder="Filtrar Posiciones"
-        />
-      </div>
-      </div>
-
-      <div className={styles.positionsList}>
-        {loading ? (
-          <p>Cargando...</p>
-        ) : positions.length === 0 ? (
-          <p>No hay posiciones que coincidan.</p>
-        ) : (
-          positions.map((pos) => (
-            <Link key={pos.id} to={`/positions/${pos.id}`} className={styles.positionItem}>
-              <div className={styles.positionImage}>
-                <img src={pos.image_thumb} alt={pos.name_en} loading="lazy" />
-              </div>
-
-              <div className={styles.positionInfo}>
-                <strong>🇪🇸 {pos.name_es}</strong>
-                <span>🇬🇧 {pos.name_en}</span>
-                <em>🇯🇵 {pos.name_jp}</em>
-              </div>
-            </Link>
-          ))
-        )}
-      </div>
-
-      {totalPages > 1 && (
-        <div className={styles.positionsPagination}>
-          <button onClick={() => setPage((p) => Math.max(p - 1, 0))} disabled={page === 0}>
-            Anterior
-          </button>
-          <span>
-            Página {page + 1} de {totalPages}
-          </span>
-          <button
-            onClick={() => setPage((p) => Math.min(p + 1, totalPages - 1))}
-            disabled={page + 1 >= totalPages}
-          >
-            Siguiente
-          </button>
+          <input
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            placeholder="Filtrar Posiciones"
+          />
         </div>
-      )}
-    </div>
+      </div>
+
+      {/* 🔥 SOLO ESTO HACE SCROLL */}
+        <div className={styles.positionsList}>
+          {loading ? (
+            <p>Cargando...</p>
+          ) : positions.length === 0 ? (
+            <p>No hay posiciones que coincidan.</p>
+          ) : (
+            positions.map((pos) => (
+              <Link key={pos.id} to={`/positions/${pos.id}`} className={styles.positionItem}>
+                <div className={styles.positionImage}>
+                  <img src={pos.image_thumb} alt={pos.name_en} loading="lazy" />
+                </div>
+
+                <div className={styles.positionInfo}>
+                  <strong>🇪🇸 {pos.name_es}</strong>
+                  <span>🇬🇧 {pos.name_en}</span>
+                  <em>🇯🇵 {pos.name_jp}</em>
+                </div>
+              </Link>
+            ))
+          )}
+        </div>
+
+        {totalPages > 1 && (
+          <div className={styles.positionsPagination}>
+            <button onClick={() => setPage((p) => Math.max(p - 1, 0))} disabled={page === 0}>
+              Anterior
+            </button>
+            <span>Página {page + 1} de {totalPages}</span>
+            <button
+              onClick={() => setPage((p) => Math.min(p + 1, totalPages - 1))}
+              disabled={page + 1 >= totalPages}
+            >
+              Siguiente
+            </button>
+          </div>
+        )}
+
+      </div>
   );
 };
 

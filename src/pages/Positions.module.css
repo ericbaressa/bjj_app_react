@@ -103,3 +103,9 @@
   border-top: 1px solid #2a2a2a;
   text-align: center;
 }
+.scrollArea {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 60px; /* espacio para el footer */
+  box-sizing: border-box;
+}
