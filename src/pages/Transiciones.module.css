@@ -27,8 +27,9 @@
     width: 200px;
     height: 140px;
     margin: 0 auto;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     position: relative;
+    margin-top: 10px;
   }
   
   /* ==========================
@@ -55,6 +56,7 @@
       transform 0.25s ease,
       filter 0.25s ease,
       z-index 0.25s ease;
+    
   }
   
   .stackItem img {
@@ -68,9 +70,9 @@
     bottom: 8px;
     left: 8px;
     right: 8px;
-    color: #fff;
+    color: #0e0d0d;
     font-weight: 700;
-    text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+ 
   }
   
   /* animación */

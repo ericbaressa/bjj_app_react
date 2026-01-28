@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../services/supabaseClient";
 import styles from "./SavedCombos.module.css";
+import "../App.css";
 
 interface Combo {
   id: number;
@@ -27,7 +28,6 @@ interface ComboStepWithPosition {
 const SavedCombos: React.FC = () => {
   const [combos, setCombos] = useState<Combo[]>([]);
   const [selectedCombo, setSelectedCombo] = useState<Combo | null>(null);
-
   const [steps, setSteps] = useState<ComboStepWithPosition[]>([]);
   const [loadingSteps, setLoadingSteps] = useState(false);
 
@@ -92,9 +92,14 @@ const SavedCombos: React.FC = () => {
   };
 
   return (
-    <div className="positionsHeader_h1">
-      <h1>Combos guardados</h1>
+    <div className="page">
 
+      {/* TÍTULO FIJO */}
+      <div className="positionsHeader_h1">
+        <h1>Combos guardados</h1>
+      </div>
+
+      {/* LISTA CON SCROLL */}
       <div className={styles.listContainer}>
         {combos.map((combo) => (
           <div
@@ -109,6 +114,7 @@ const SavedCombos: React.FC = () => {
         ))}
       </div>
 
+      {/* TIMELINE CON SCROLL */}
       <div className={styles.timelineContainer}>
         {loadingSteps ? (
           <p>Cargando...</p>
@@ -121,7 +127,11 @@ const SavedCombos: React.FC = () => {
             {steps.map((s, index) => (
               <div key={s.step_index} className={styles.step}>
                 <div className={styles.card}>
-                  <img src={s.position.image_thumb} alt={s.position.name_en} loading="lazy" />
+                  <img
+                    src={s.position.image_thumb}
+                    alt={s.position.name_en}
+                    loading="lazy"
+                  />
                   <div className={styles.text}>
                     <strong>{s.position.name_es}</strong>
                     <p>{s.position.name_en}</p>
@@ -136,6 +146,7 @@ const SavedCombos: React.FC = () => {
           </div>
         )}
       </div>
+
     </div>
   );
 };

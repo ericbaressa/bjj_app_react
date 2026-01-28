@@ -37,10 +37,12 @@
 .timelineContainer {
   width: 90%;
   margin: 20px auto 0;
-  display: flex;
+  flex:1;
   justify-content: center;
   box-sizing: border-box;
   overflow-y: auto;
+  padding-bottom: 50px;
+  
 }
 
 .timeline {
@@ -48,7 +50,6 @@
   display: flex;
   flex-direction: column;
   align-items: center; /* centra todos los steps */
-  overflow-y: auto;
 }
 
 .step {

@@ -91,7 +91,7 @@ const PositionDetail: React.FC = () => {
             top: 0,
             zIndex: 10,
             background: "#1a1a1a",   // mismo fondo que el resto
-            padding: "20px",
+            padding: "50px",
             borderBottom: "1px solid #2a2a2a",
           }}
         >
